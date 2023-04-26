@@ -1,0 +1,15 @@
+.back-btn {
+    --background: transparent !important;
+    --border: 0;
+    --box-shadow: none;
+}
+
+ion-checkbox {
+    --size: 16px;
+    --checkbox-background-checked: black;
+}
+
+ion-checkbox::part(container) {
+    border-radius: 3px;
+    border: 2px solid #fff;
+}

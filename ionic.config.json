@@ -1,0 +1,7 @@
+{
+  "name": "quizit",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react-vite"
+}
