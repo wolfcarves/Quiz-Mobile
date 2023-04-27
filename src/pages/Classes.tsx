@@ -1,17 +1,24 @@
-import { IonButton, IonContent, IonHeader, IonPage, IonRouterLink, IonTabBar, IonNavLink, IonTabButton, IonTitle, IonToolbar } from '@ionic/react';
+import { IonButton, IonContent, IonHeader, IonIcon, IonPage, IonRefresher, IonRefresherContent, IonTitle, IonToolbar } from '@ionic/react';
 import ExploreContainer from '../components/ExploreContainer';
 import { Link } from 'react-router-dom';
-import { IonReactRouter } from '@ionic/react-router';
-import React, { useContext } from 'react';
 
-const classes: React.FC = () => {
+
+const Classes: React.FC = () => {
+
+    const refresh = (event: CustomEvent) => {
+        window.location.reload();
+        event.detail.complete();
+    }
+
     return (
         <IonPage>
             <IonContent>
+                <IonRefresher slot="fixed" onIonRefresh={refresh}>
+                    <IonRefresherContent></IonRefresherContent>
+                </IonRefresher>
                 <div className='position-absolute top-0 bottom-0 w-100 p-2 overflow-auto' style={{ backgroundColor: '#1E304D' }}>
-                    {/* Card Row */}
                     <Link to="/view" className='d-flex w-100 bg-dark rounded mb-1 text-decoration-none' style={{ height: '8rem' }}>
-                        <span className='text-white m-auto'>Class</span>
+                        <span className='text-white m-auto'>ClassSample</span>
                     </Link>
                 </div>
             </IonContent>
@@ -19,4 +26,4 @@ const classes: React.FC = () => {
     );
 };
 
-export default classes;
+export default Classes;

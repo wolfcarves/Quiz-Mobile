@@ -12,15 +12,12 @@ import {
   setupIonicReact
 } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
-import { ellipse, square, triangle } from 'ionicons/icons';
-import Tab1 from './pages/Tab1';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
 import Classes from './pages/Classes';
 import Inbox from './pages/Inbox';
 import Join from './pages/Join';
 import Profile from './pages/Profile';
-import ViewClass from './pages/view';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -57,10 +54,15 @@ import { IconContext } from 'react-icons/lib';
 setupIonicReact();
 
 const MyApp: React.FC = () => {
-  const location = useLocation();
+  const [currentLoc, setCurrentLoc] = useState(window.location.pathname);
+
+  setInterval(() => {
+    setCurrentLoc(window.location.pathname);
+  }, 1000)
+
 
   return (
-    <IonApp className='' style={{ backgroundColor: '# 1E304D' }}>
+    <IonApp style={{ backgroundColor: '# 1E304D' }}>
       <IonReactRouter>
         <IonTabs>
           <IonRouterOutlet>
@@ -76,18 +78,23 @@ const MyApp: React.FC = () => {
             <Route exact path="/classes">
               <Classes />
             </Route>
-            {/* <Route exact path="/inbox" component={Inbox} />
-            <Route exact path="/join" component={Join} />
-            <Route exact path="/profile" component={Profile} />
-            <Route exact path="/view" component={ViewClass} /> */}
+            <Route exact path="/inbox">
+              <Inbox />
+            </Route>
+            <Route exact path="/join">
+              <Join />
+            </Route>
+            <Route exact path="/profile">
+              <Profile />
+            </Route>
           </IonRouterOutlet>
-          <IonTabBar slot='bottom' style={{ display: location.pathname == '/login' || location.pathname == '/signup' || location.pathname == '/' ? 'none' : 'flex' }}> {/* style={{display: isLoggedIn == true ? 'block' : 'none'}} */}
+          <IonTabBar slot='bottom' style={{ display: currentLoc == '/login' || currentLoc == '/signup' || currentLoc == '/' ? 'none' : 'flex' }}>
             <IonTabButton tab="classes" href="/classes" style={{ backgroundColor: '#141f31' }}>
               <li className='d-flex flex-column align-items-center py-2 flex-grow-1'>
                 <IconContext.Provider value={{ size: '2em' }}>
                   <HiOutlinePaperAirplane />
                 </IconContext.Provider>
-                <IonLabel className="bg-transparent" style={{ fontSize: '1.2em' }}>Classes</IonLabel>
+                <IonLabel className="bg-transparent" style={{ fontSize: '1.3em' }}>Classes</IonLabel>
               </li>
             </IonTabButton>
             <IonTabButton tab="inbox" href="/inbox" style={{ backgroundColor: '#141f31' }}>
@@ -129,3 +136,5 @@ const App: React.FC = () => (
 
 export default App;
 
+
+//style={{ display: location.pathname == '/login' || location.pathname == '/signup' || location.pathname == '/' ? 'none' : 'flex' }}

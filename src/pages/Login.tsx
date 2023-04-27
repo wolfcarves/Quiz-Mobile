@@ -1,15 +1,62 @@
-import { IonButton, IonContent, IonHeader, IonImg, IonItem, IonNavLink, IonPage, IonRouterLink, IonRouterOutlet, IonTabButton, IonTitle, IonToolbar } from '@ionic/react';
+import { IonButton, IonContent, IonHeader, IonImg, IonItem, IonLoading, IonNavLink, IonPage, IonRouterLink, IonRouterOutlet, IonTabButton, IonTitle, IonToolbar } from '@ionic/react';
 import React, { useState, useEffect } from 'react';
 import ExploreContainer from '../components/ExploreContainer';
 import './Login.css';
+import { useHistory } from 'react-router';
 
 const Login: React.FC = () => {
+    const history = useHistory();
+
+    const [emailVal, setEmailVal] = useState('');
+    const [passVal, setPassVal] = useState('');
+    const [opacity, setOpacity] = useState(false);
+
+    function handleLogin() {
+        const formData = new FormData();
+
+        formData.append('email', emailVal);
+        formData.append('pass', passVal);
+
+        fetch('http://localhost/quiz_http/api/login.php', {
+            method: 'POST',
+            body: formData
+        })
+            .then(response => response.text())
+            .then(data => {
+                const res = data;
+
+                if (res == '1') {
+                    setTimeout(() => {
+                        redirect();
+                    },3000)
+                } else {
+                    setTimeout(() => {
+                        invalidCred();
+                    },3000)
+                }
+            })
+            .catch(err => console.log(err))
+    }
+
+    function redirect() {
+        history.push('/classes');
+    }
+    
+    function invalidCred() {
+        setOpacity(prevVal => !prevVal);
+
+        setTimeout(() => {
+            setOpacity(prevVal => !prevVal);
+        },5000)
+    }
+
     return (
         <IonPage>
             <IonContent>
                 <div className="w-100 h-100 d-flex flex-column overflow-hidden" style={{ backgroundColor: '#1E304D' }}>
-                    <div className="top-container">
+                    <div className="top-container d-flex flex-column">
                         <h1>Sign in to your Account</h1>
+                        <span className='text-danger' style={{opacity: opacity == false ? '0' : '1' }}>Invalid credentials</span>
                     </div>
 
                     <div className='form p-3 my-auto text-white'>
@@ -17,11 +64,11 @@ const Login: React.FC = () => {
 
                         <div>
                             <div>
-                                <input type="email" className='form-control input' placeholder='Email' />
+                                <input type="email" className='form-control input' placeholder='Email' onChange={(e) => setEmailVal(e.target.value)} />
                             </div>
 
                             <div>
-                                <input type="password" className='form-control input' placeholder='Password' />
+                                <input type="password" className='form-control input' placeholder='Password' onChange={(e) => setPassVal(e.target.value)} />
                             </div>
 
                             <div>
@@ -30,7 +77,7 @@ const Login: React.FC = () => {
                         </div>
 
                         <div className='buttons'>
-                            <IonButton routerLink={'/classes'} className='login-btn w-100 button-style'>
+                            <IonButton id="open-loading" onClick={handleLogin} className='login-btn w-100 button-style'>
                                 Login
                             </IonButton>
 
@@ -42,6 +89,8 @@ const Login: React.FC = () => {
                         </div>
                     </div>
                 </div>
+
+                <IonLoading trigger="open-loading" message="Logging In" duration={3000} spinner="circles" />
             </IonContent>
         </IonPage>
 
@@ -49,5 +98,3 @@ const Login: React.FC = () => {
 };
 
 export default Login;
-
-//className='btn w-100 mt-4 rounded text-white py-2' style={{ backgroundColor: '#F26E1D' }}
