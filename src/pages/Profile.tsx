@@ -3,6 +3,10 @@ import ExploreContainer from '../components/ExploreContainer';
 
 
 const profile: React.FC = () => {
+    function logout() {
+        localStorage.removeItem('userId');
+    }
+
     return (
         <IonPage>
             <IonContent>
@@ -36,7 +40,7 @@ const profile: React.FC = () => {
                             </div>
 
                             <div>
-                                <IonButton routerLink={'/'} color={'danger'} className='w-100 button-style'>
+                                <IonButton onClick={logout} routerLink={'/'} color={'danger'} className='w-100 button-style'>
                                     Logout
                                 </IonButton>
                             </div>

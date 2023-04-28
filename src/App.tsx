@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext, useMemo, createContext } from 'react';
-import { BrowserRouter, Redirect, Route, Switch, useLocation } from 'react-router-dom';
+import { BrowserRouter, Redirect, Route, Switch, useHistory, useLocation } from 'react-router-dom';
 import {
   IonApp,
   IonIcon,
@@ -53,83 +53,90 @@ import { IconContext } from 'react-icons/lib';
 
 setupIonicReact();
 
-//Context
-import { SessionContext } from './pages/Session';
-
 const MyApp: React.FC = () => {
+  const history = useHistory();
   const [currentLoc, setCurrentLoc] = useState(window.location.pathname);
-  const [userId, setUserId] = useState(0);
-  
-  setInterval(() => { 
+
+  setInterval(() => {
     setCurrentLoc(window.location.pathname);
   }, 1000)
 
+  function verifySession() {
+    if (currentLoc == '/' || currentLoc == '/login' && localStorage.getItem('userId')) {
+      history.push('/classes')
+    }
+
+    if(!localStorage.getItem('userId')) {
+      history.push('/login');
+    }
+  }
+
+  verifySession();
+
   return (
-    <SessionContext.Provider value={{userId, setUserId}}>
-      <IonApp style={{ backgroundColor: '#1E304D' }}>
-        <IonReactRouter>
-          <IonTabs>
-            <IonRouterOutlet>
-              <Route exact path="/">
-                <Login />
-              </Route>
-              <Route exact path="/login">
-                <Login />
-              </Route>
-              <Route exact path="/signup">
-                <Signup />
-              </Route>
-              <Route exact path="/classes">
-                <Classes />
-              </Route>
-              <Route exact path="/inbox">
-                <Inbox />
-              </Route>
-              <Route exact path="/join">
-                <Join />
-              </Route>
-              <Route exact path="/profile">
-                <Profile />
-              </Route>
-            </IonRouterOutlet>
-            <IonTabBar slot='bottom' style={{ display: currentLoc == '/login' || currentLoc == '/signup' || currentLoc == '/' ? 'none' : 'flex' }}>
-              <IonTabButton tab="classes" href="/classes" style={{ backgroundColor: '#141f31' }}>
-                <li className='d-flex flex-column align-items-center py-2 flex-grow-1'>
-                  <IconContext.Provider value={{ size: '2em' }}>
-                    <HiOutlinePaperAirplane />
-                  </IconContext.Provider>
-                  <IonLabel className="bg-transparent" style={{ fontSize: '1.3em' }}>Classes</IonLabel>
-                </li>
-              </IonTabButton>
-              <IonTabButton tab="inbox" href="/inbox" style={{ backgroundColor: '#141f31' }}>
-                <li className='d-flex flex-column align-items-center py-2 flex-grow-1'>
-                  <IconContext.Provider value={{ size: '2em' }}>
-                    <AiOutlineMail />
-                  </IconContext.Provider>
-                  <IonLabel className="bg-transparent" style={{ fontSize: '1.3em' }}>Inbox</IonLabel>
-                </li>
-              </IonTabButton>
-              <IonTabButton tab="join" href="/join" style={{ backgroundColor: '#141f31' }}>
-                <li className='d-flex flex-column align-items-center py-2 flex-grow-1'>
-                  <IconContext.Provider value={{ size: '2em' }}>
-                    <BiSearchAlt />
-                  </IconContext.Provider>
-                  <IonLabel className="bg-transparent" style={{ fontSize: '1.3em' }}>Join</IonLabel >
-                </li>
-              </IonTabButton>
-              <IonTabButton tab="profile" href="/profile" style={{ backgroundColor: '#141f31' }}>
-                <li className='d-flex flex-column align-items-center py-2 flex-grow-1'>
-                  <IconContext.Provider value={{ size: '2em' }}>
-                    <CgProfile />
-                  </IconContext.Provider>
-                  <IonLabel className="bg-transparent" style={{ fontSize: '1.3em' }}>Profile</IonLabel>
-                </li>
-              </IonTabButton>
-            </IonTabBar>
-          </IonTabs>
-        </IonReactRouter>
-      </IonApp>
-    </SessionContext.Provider>
+    <IonApp style={{ backgroundColor: '#1E304D' }}>
+      <IonReactRouter>
+        <IonTabs>
+          <IonRouterOutlet>
+            <Route exact path="/">
+              <Login />
+            </Route>
+            <Route exact path="/login">
+              <Login />
+            </Route>
+            <Route exact path="/signup">
+              <Signup />
+            </Route>
+            <Route exact path="/classes">
+              <Classes />
+            </Route>
+            <Route exact path="/inbox">
+              <Inbox />
+            </Route>
+            <Route exact path="/join">
+              <Join />
+            </Route>
+            <Route exact path="/profile">
+              <Profile />
+            </Route>
+          </IonRouterOutlet>
+          <IonTabBar slot='bottom' style={{ display: currentLoc == '/login' || currentLoc == '/signup' || currentLoc == '/' ? 'none' : 'flex' }}>
+            <IonTabButton tab="classes" href="/classes" style={{ backgroundColor: '#141f31' }}>
+              <li className='d-flex flex-column align-items-center py-2 flex-grow-1'>
+                <IconContext.Provider value={{ size: '2em' }}>
+                  <HiOutlinePaperAirplane />
+                </IconContext.Provider>
+                <IonLabel className="bg-transparent" style={{ fontSize: '1.3em' }}>Classes</IonLabel>
+              </li>
+            </IonTabButton>
+            <IonTabButton tab="inbox" href="/inbox" style={{ backgroundColor: '#141f31' }}>
+              <li className='d-flex flex-column align-items-center py-2 flex-grow-1'>
+                <IconContext.Provider value={{ size: '2em' }}>
+                  <AiOutlineMail />
+                </IconContext.Provider>
+                <IonLabel className="bg-transparent" style={{ fontSize: '1.3em' }}>Inbox</IonLabel>
+              </li>
+            </IonTabButton>
+            <IonTabButton tab="join" href="/join" style={{ backgroundColor: '#141f31' }}>
+              <li className='d-flex flex-column align-items-center py-2 flex-grow-1'>
+                <IconContext.Provider value={{ size: '2em' }}>
+                  <BiSearchAlt />
+                </IconContext.Provider>
+                <IonLabel className="bg-transparent" style={{ fontSize: '1.3em' }}>Join</IonLabel >
+              </li>
+            </IonTabButton>
+            <IonTabButton tab="profile" href="/profile" style={{ backgroundColor: '#141f31' }}>
+              <li className='d-flex flex-column align-items-center py-2 flex-grow-1'>
+                <IconContext.Provider value={{ size: '2em' }}>
+                  <CgProfile />
+                </IconContext.Provider>
+                <IonLabel className="bg-transparent" style={{ fontSize: '1.3em' }}>Profile</IonLabel>
+              </li>
+            </IonTabButton>
+          </IonTabBar>
+        </IonTabs>
+      </IonReactRouter>
+    </IonApp>
   );
 };
 
@@ -140,6 +147,3 @@ const App: React.FC = () => (
 );
 
 export default App;
-
-
-//style={{ display: location.pathname == '/login' || location.pathname == '/signup' || location.pathname == '/' ? 'none' : 'flex' }}

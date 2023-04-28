@@ -30,8 +30,6 @@ const Login: React.FC = () => {
 
                 localStorage.setItem('userId', res.userId);
 
-                console.log(localStorage.getItem('userId'));
-
                 if (res.response == '1') {
                     setTimeout(() => {
                         redirect();
@@ -56,6 +54,14 @@ const Login: React.FC = () => {
             setOpacity(prevVal => !prevVal);
         },5000)
     }
+
+    function verifySession() {
+        if(localStorage.getItem('userId')) {
+            history.push('/classes')
+        }
+    }
+
+    verifySession();
 
     return (
         <IonPage>
