@@ -1,13 +1,22 @@
 import { IonButton, IonContent, IonHeader, IonIcon, IonPage, IonRefresher, IonRefresherContent, IonTitle, IonToolbar } from '@ionic/react';
 import ExploreContainer from '../components/ExploreContainer';
 import { Link } from 'react-router-dom';
-
+import { myApi } from '../api/api';
 
 const Classes: React.FC = () => {
+    const contextData = {
+        name: "Rodel Crisosto",
+        age: 22
+    }
+    const api = myApi;
 
     const refresh = (event: CustomEvent) => {
         window.location.reload();
         event.detail.complete();
+    }
+
+    const renderClasses = () => {
+        
     }
 
     return (

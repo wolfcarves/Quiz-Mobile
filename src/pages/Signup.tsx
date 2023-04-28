@@ -1,18 +1,19 @@
 import { IonButton, IonCheckbox, IonContent, IonHeader, IonIcon, IonPage, IonTitle, IonToolbar } from '@ionic/react';
 import ExploreContainer from '../components/ExploreContainer';
 import './login.css';
-import { returnUpBackOutline } from 'ionicons/icons';
-
 import './Signup.css';
+import { useHistory } from 'react-router';
 
 const Signup: React.FC = () => {
+    const history = useHistory();
+
     return (
         <IonPage>
             <IonContent>
                 <div className="w-100 h-100 d-flex flex-column p-2" style={{ backgroundColor: '#1E304D' }}>
                     <div>
-                        <IonButton routerLink={'/login'} routerDirection='back' className='back-btn'>
-                            <IonIcon icon={returnUpBackOutline} slot='start'></IonIcon>
+                        <IonButton routerDirection='back' onClick={history.goBack}
+                            className='back-btn'>
                             Back to login
                         </IonButton>
                     </div>

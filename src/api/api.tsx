@@ -1,0 +1,1 @@
+export const myApi = 'http://192.168.8.117/quiz_http/api/';

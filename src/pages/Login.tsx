@@ -4,7 +4,10 @@ import ExploreContainer from '../components/ExploreContainer';
 import './Login.css';
 import { useHistory } from 'react-router';
 
+import { myApi } from '../api/api';
+
 const Login: React.FC = () => {
+    const api = myApi;
     const history = useHistory();
 
     const [emailVal, setEmailVal] = useState('');
@@ -17,15 +20,19 @@ const Login: React.FC = () => {
         formData.append('email', emailVal);
         formData.append('pass', passVal);
 
-        fetch('http://localhost/quiz_http/api/login.php', {
+        fetch(`${api}login.php`, {
             method: 'POST',
             body: formData
         })
-            .then(response => response.text())
+            .then(response => response.json())
             .then(data => {
                 const res = data;
 
-                if (res == '1') {
+                localStorage.setItem('userId', res.userId);
+
+                console.log(localStorage.getItem('userId'));
+
+                if (res.response == '1') {
                     setTimeout(() => {
                         redirect();
                     },3000)
