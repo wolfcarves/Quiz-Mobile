@@ -1,3 +1,4 @@
+import React, {useEffect} from 'react';
 import { IonButton, IonContent, IonHeader, IonIcon, IonPage, IonTitle, IonToolbar } from '@ionic/react';
 import ExploreContainer from '../components/ExploreContainer';
 
@@ -6,8 +7,15 @@ import { IoMdClose } from 'react-icons/io'
 import { IconContext } from 'react-icons/lib';
 
 import './login.css'
+import { UserContext } from '../App';
 
 const Join: React.FC = () => {
+    const { userLogged, setUserLogged } = React.useContext(UserContext);
+
+    useEffect(() => {
+        setUserLogged(true);
+    }, [])
+
     return (
         <IonPage>
             <IonContent>

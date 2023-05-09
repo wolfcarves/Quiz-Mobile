@@ -1,10 +1,11 @@
 import { IonButton, IonContent, IonHeader, IonImg, IonItem, IonLoading, IonNavLink, IonPage, IonRouterLink, IonRouterOutlet, IonTabButton, IonTitle, IonToolbar } from '@ionic/react';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import ExploreContainer from '../components/ExploreContainer';
 import './Login.css';
 import { useHistory } from 'react-router';
 
 import { myApi } from '../api/api';
+import { UserContext } from '../App';
 
 const Login: React.FC = () => {
     const api = myApi;
@@ -13,6 +14,8 @@ const Login: React.FC = () => {
     const [emailVal, setEmailVal] = useState('');
     const [passVal, setPassVal] = useState('');
     const [opacity, setOpacity] = useState(false);
+
+    const { userLogged, setUserLogged } = React.useContext(UserContext);
 
     function handleLogin() {
         const formData = new FormData();
@@ -32,12 +35,13 @@ const Login: React.FC = () => {
 
                 if (res.response == '1') {
                     setTimeout(() => {
+                        setUserLogged(true);
                         redirect();
-                    },3000)
+                    }, 3000)
                 } else {
                     setTimeout(() => {
                         invalidCred();
-                    },3000)
+                    }, 3000)
                 }
             })
             .catch(err => console.log(err))
@@ -46,22 +50,14 @@ const Login: React.FC = () => {
     function redirect() {
         history.push('/classes');
     }
-    
+
     function invalidCred() {
         setOpacity(prevVal => !prevVal);
 
         setTimeout(() => {
             setOpacity(prevVal => !prevVal);
-        },5000)
+        }, 5000)
     }
-
-    function verifySession() {
-        if(localStorage.getItem('userId')) {
-            history.push('/classes')
-        }
-    }
-
-    verifySession();
 
     return (
         <IonPage>
@@ -69,7 +65,7 @@ const Login: React.FC = () => {
                 <div className="w-100 h-100 d-flex flex-column overflow-hidden" style={{ backgroundColor: '#1E304D' }}>
                     <div className="top-container d-flex flex-column">
                         <h1>Sign in to your Account</h1>
-                        <span className='text-danger' style={{opacity: opacity == false ? '0' : '1' }}>Invalid credentials</span>
+                        <span className='text-danger' style={{ opacity: opacity == false ? '0' : '1' }}>Invalid credentials</span>
                     </div>
 
                     <div className='form p-3 my-auto text-white'>
@@ -96,7 +92,7 @@ const Login: React.FC = () => {
 
                             <div>Dont have an account?</div>
 
-                            <IonButton routerLink={'/signup'} fill="outline" className='signup-btn w-100 button-style'>
+                            <IonButton onClick={() => { history.push('/signup') }} fill="outline" className='signup-btn w-100 button-style'>
                                 Create new account
                             </IonButton>
                         </div>

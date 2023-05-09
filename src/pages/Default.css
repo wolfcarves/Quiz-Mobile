@@ -8,6 +8,14 @@
     color: #F26E1D;
 }
 
+.main-bg-clr {
+    background-color: #F26E1D;
+}
+
+.secondary-bg-clr {
+    background-color: #8B04FB;
+}
+
 .button-style {
     height: 3rem;
     --border-radius: 15px;
@@ -17,3 +25,4 @@
     background-color: #ffffff10;
     backdrop-filter: blur(100px);
 }
+

@@ -1,16 +1,28 @@
+import React, { useContext, useEffect } from 'react';
 import { IonButton, IonContent, IonHeader, IonIcon, IonPage, IonTitle, IonToolbar } from '@ionic/react';
 import ExploreContainer from '../components/ExploreContainer';
+import { UserContext } from '../App';
+import { useHistory } from 'react-router';
 
 
 const profile: React.FC = () => {
+    const history = useHistory();
+    const { userLogged, setUserLogged } = React.useContext(UserContext);
+
+    useEffect(() => {
+        setUserLogged(true);
+    }, [])
+
     function logout() {
         localStorage.removeItem('userId');
+        setUserLogged(false);
+        history.push('/');
+        window.location.reload();
     }
 
     return (
         <IonPage>
             <IonContent>
-
                 <div className='position-absolute top-0 bottom-0 w-100 p-2 overflow-auto' style={{ backgroundColor: '#1E304D' }}>
                     <div className='d-flex flex-column align-items-center py-3'>
                         <div className='bg-dark rounded-circle' style={{ width: '7rem', aspectRatio: '1' }}></div>
@@ -20,7 +32,7 @@ const profile: React.FC = () => {
                     <div>
                         <h3 style={{ color: '#F26E1D' }}>My Info</h3>
 
-                        <div className='mt-3'>
+                        <div>
                             <div>
                                 <label className='text-white'>Full name</label>
                                 <input type="text" className='input form-control py-2 mb-3 bg-transparent text-white'
@@ -33,21 +45,13 @@ const profile: React.FC = () => {
                                     style={{ border: '0', borderBottom: '1px solid #fff' }} placeholder='Name' disabled value="rodel.crisosto7@gmail.com" />
                             </div>
 
-                            <div>
-                                <label className='text-white'>Total Classes</label>
-                                <input type="text" className='input form-control py-2 mb-3 bg-transparent text-white'
-                                    style={{ border: '0', borderBottom: '1px solid #fff' }} placeholder='Name' disabled value="0" />
-                            </div>
-
-                            <div>
-                                <IonButton onClick={logout} routerLink={'/'} color={'danger'} className='w-100 button-style'>
+                            <div className='mt-auto'>
+                                <IonButton onClick={logout} color={'danger'} className='w-100 button-style'>
                                     Logout
                                 </IonButton>
                             </div>
                         </div>
                     </div>
-
-
                 </div>
             </IonContent>
         </IonPage>
