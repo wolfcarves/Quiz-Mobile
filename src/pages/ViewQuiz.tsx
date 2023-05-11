@@ -9,11 +9,6 @@ import './Default.css';
 import { AiOutlineSetting } from 'react-icons/ai';
 import { IoMdReturnLeft } from 'react-icons/io';
 
-const refresh = (event: CustomEvent) => {
-    window.location.reload();
-    event.detail.complete();
-}
-
 const ViewQuiz: React.FC = () => {
     const history = useHistory();
     const { userLogged, setUserLogged } = React.useContext(UserContext);
@@ -24,7 +19,7 @@ const ViewQuiz: React.FC = () => {
 
     useEffect(() => {
         setUserLogged(true);
-    }, [])
+    }, [location.pathname])
 
     const api = myApi;
 
@@ -50,13 +45,12 @@ const ViewQuiz: React.FC = () => {
     return (
         <IonPage>
             <IonContent>
-                <IonRefresher slot="fixed" onIonRefresh={refresh}>
-                    <IonRefresherContent></IonRefresherContent>
-                </IonRefresher>
                 <div className='main-container d-flex flex-column h-100 position-absolute top-0 bottom-0 w-100 p-2 overflow-auto' style={{ backgroundColor: '#1E304D' }}>
 
                     <div className='p-2'>
-                        <button onClick={(e) => { history.goBack() }} className='bg-transparent'><IoMdReturnLeft className='pe-2 fs-1' />Back</button>
+                        <button onClick={(e) => {
+                            history.goBack()
+                        }} className='bg-transparent'><IoMdReturnLeft className='pe-2 fs-1' />Back</button>
                     </div>
 
                     {quiz.map((item: any, index) => (
@@ -84,11 +78,11 @@ const ViewQuiz: React.FC = () => {
                             <div className='mt-auto mb-3'>
                                 <button id="open-loading" onClick={(e) => { history.push(`/TakeQuiz?quizid=${item.quizId}`) }} className='main-bg-clr w-100' style={{ height: '3rem', borderRadius: '15px' }}>Start Answering</button>
                             </div>
+
+                            <IonLoading trigger="open-loading" message="Loading Quiz" duration={500} spinner="circles" />
                         </div>
                     ))}
 
-
-                    <IonLoading trigger="open-loading" message="Loading Quiz" duration={500} spinner="circles" />
                 </div>
             </IonContent>
         </IonPage>
