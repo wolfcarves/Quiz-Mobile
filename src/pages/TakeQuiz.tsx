@@ -14,6 +14,7 @@ const TakeQuiz: React.FC = () => {
     const { userLogged, setUserLogged } = React.useContext(UserContext);
     const [studentClass, setStudentClass] = useState([]);
     const [question, setQuestion] = useState([]);
+    const [answer, setAnswer] = useState([]);
     const quizId = new URLSearchParams(useLocation().search).get('quizid');
 
     useEffect(() => {
@@ -38,6 +39,7 @@ const TakeQuiz: React.FC = () => {
                 setQuestion(data);
             })
             .catch(err => console.log(err))
+
     }, [])
 
     function select() { //This function is for adding background color to selected answer
@@ -56,30 +58,31 @@ const TakeQuiz: React.FC = () => {
         })
     }
 
-    let answers: any = [];
+    let answersArr: any = [];
 
     function getAnswers() {
         const inputs = document.querySelectorAll<HTMLInputElement>('input[type="radio"]');
-        answers = [];
 
-        inputs.forEach(input => {
+        answersArr = [];
+
+        inputs.forEach((input, index) => {
             if (input.checked == true) {
-                answers.push(input.value);
+                answersArr.push(input.value);
             }
         })
+        setAnswer(answersArr);
     }
 
     const [disable, setDisable] = useState(true);
 
     function validateAnswers() {
         getAnswers();
-        if (answers.length != question.length) {
+        if (answersArr.length != question.length) {
             setDisable(true);
             return;
         } else {
             setDisable(false)
         }
-
     }
 
     function submitQuizForm() {
@@ -88,18 +91,16 @@ const TakeQuiz: React.FC = () => {
         let userId = localStorage.getItem('userId');
 
         formData.append('userId', String(userId));
+        formData.append('quizId', String(quizId));
         formData.append('questionArray', JSON.stringify(question));
+        formData.append('answerArray', JSON.stringify(answer));
 
-        validateAnswers()
+        validateAnswers();
 
         fetch(`${api}submit-answer.php`, {
             method: 'POST',
             body: formData
         })
-            .then(response => response.json())
-            .then(data => {
-
-            })
             .catch(err => console.log(err))
     }
 
@@ -109,7 +110,6 @@ const TakeQuiz: React.FC = () => {
                 <div className='main-container d-flex flex-column h-100 position-absolute top-0 bottom-0 w-100 p-2 overflow-auto' style={{ backgroundColor: '#1E304D' }}>
 
                     <div className='text-center'>
-
                         {question.map((question: any, questionIndex) => (
                             <div key={questionIndex} className='border rounded rounded p-2 mt-3 mb-4'>
 
@@ -133,9 +133,16 @@ const TakeQuiz: React.FC = () => {
                             </div>
                         ))}
                     </div>
-                    
+
                     <div className='mt-auto mb-2'>
-                        <button onClick={submitQuizForm} className='main-bg-clr w-100' style={{ height: '3rem', borderRadius: '15px' }} disabled={disable}>Submit</button>
+                        <button onClick={() => {
+                            submitQuizForm();
+                            history.goBack();
+                            window.postMessage('updateData', window.location.origin);
+                            // setTimeout(() => {
+                            //     window.location.reload();
+                            // }, 20)
+                        }} className='main-bg-clr w-100' style={{ height: '3rem', borderRadius: '15px' }} disabled={disable}>Submit</button>
                     </div>
                 </div>
 

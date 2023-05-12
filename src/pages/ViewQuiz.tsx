@@ -41,6 +41,40 @@ const ViewQuiz: React.FC = () => {
             .catch(err => console.log(err))
     }, [])
 
+    const [btnText, setBtnText] = useState('');
+    const [disable, setDisable] = useState(false);
+    const [activate, setActivate] = useState(1);
+
+    window.addEventListener('message', function (event) {
+        if (event.data === 'updateData') {
+            setActivate(prev => prev + 1);
+        }
+    });
+
+    useEffect(() => {
+        const newFormData = new FormData();
+
+        let userId = localStorage.getItem('userId');
+
+        newFormData.append('studentId', String(userId));
+        newFormData.append('quizId', String(quizId));
+
+        fetch(`${api}verify-quiz.php`, {
+            method: 'POST',
+            body: newFormData
+        })
+            .then(res => res.text())
+            .then(data => {
+                if (data == 'Start Answering') {
+                    setBtnText('Start Answering');
+                    setDisable(false);
+                } else {
+                    setBtnText(data);
+                    setDisable(true);
+                }
+            })
+            .catch(err => console.log(err))
+    }, [activate])
 
     return (
         <IonPage>
@@ -76,10 +110,18 @@ const ViewQuiz: React.FC = () => {
                             </div>
 
                             <div className='mt-auto mb-3'>
-                                <button id="open-loading" onClick={(e) => { history.push(`/TakeQuiz?quizid=${item.quizId}`) }} className='main-bg-clr w-100' style={{ height: '3rem', borderRadius: '15px' }}>Start Answering</button>
+
+                                <button id="submitBtn"
+                                    disabled={disable}
+                                    onClick={(e) => {
+                                        history.push(`/TakeQuiz?quizid=${item.quizId}`);
+                                    }} className={`w-100 ${disable == true ? 'main-bg-clr-50 text-white' : 'main-bg-clr'}`} style={{ height: '3rem', borderRadius: '15px' }}>
+                                    {btnText}
+                                </button>
+
                             </div>
 
-                            <IonLoading trigger="open-loading" message="Loading Quiz" duration={500} spinner="circles" />
+                            <IonLoading trigger="submitBtn" message="Loading Quiz" duration={500} spinner="circles" />
                         </div>
                     ))}
 
