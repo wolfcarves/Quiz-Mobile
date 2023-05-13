@@ -14,12 +14,15 @@ import {
 import { IonReactRouter } from '@ionic/react-router';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
+import SignupSuccess from './pages/SignupSucess';
 import Classes from './pages/Classes';
+import ClassSetting from './pages/ClassSetting';
 import Inbox from './pages/Inbox';
 import Join from './pages/Join';
 import Profile from './pages/Profile';
 import ViewClass from './pages/ViewClass';
 import ViewQuiz from './pages/ViewQuiz';
+import TakeQuiz from './pages/TakeQuiz';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -53,7 +56,6 @@ import { AiOutlineMail } from 'react-icons/ai';
 import { BiSearchAlt } from 'react-icons/bi';
 import { CgProfile } from 'react-icons/cg';
 import { IconContext } from 'react-icons/lib';
-import TakeQuiz from './pages/TakeQuiz';
 
 setupIonicReact();
 
@@ -87,8 +89,14 @@ const MyApp: React.FC = () => {
               <Route exact path="/signup">
                 <Signup />
               </Route>
+              <Route exact path="/signupsuccess">
+                <SignupSuccess />
+              </Route>
               <Route exact path="/classes">
                 <Classes />
+              </Route>
+              <Route exact path="/classsetting">
+                <ClassSetting />
               </Route>
               <Route exact path="/inbox">
                 <Inbox />

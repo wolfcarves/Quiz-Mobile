@@ -116,7 +116,7 @@ const ViewQuiz: React.FC = () => {
                                     onClick={(e) => {
                                         history.push(`/TakeQuiz?quizid=${item.quizId}`);
                                     }} className={`w-100 ${disable == true ? 'main-bg-clr-50 text-white' : 'main-bg-clr'}`} style={{ height: '3rem', borderRadius: '15px' }}>
-                                    {btnText}
+                                    {btnText}{btnText != "Start Answering" ? "/" + item.quizLength : ""}
                                 </button>
 
                             </div>

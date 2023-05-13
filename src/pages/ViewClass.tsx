@@ -65,7 +65,6 @@ const ViewClass: React.FC = () => {
             .catch(err => console.log(err))
     }, [])
 
-
     return (
         <IonPage>
             <IonContent>
@@ -79,7 +78,7 @@ const ViewClass: React.FC = () => {
                             <div className='d-flex justify-content-between align-items-center py-2 px-2'>
                                 <button onClick={(e) => { history.goBack() }} className='bg-transparent'><IoMdReturnLeft className='pe-2 fs-1' />Back</button>
 
-                                <button className='p-2 rounded bg-transparent fs-3'>
+                                <button onClick={(e) => { history.push('/classsetting') }} className='p-2 rounded bg-transparent fs-3'>
                                     <AiOutlineSetting className='d-flex' />
                                 </button>
                             </div>
@@ -100,7 +99,9 @@ const ViewClass: React.FC = () => {
 
                                             <div className='d-flex align-items-center justify-content-between'>
                                                 <span style={{ fontSize: '0.9em' }}>{item.quizName}</span>
-                                                <button onClick={(e) => { history.push(`/viewquiz?quizid=${item.quizId}`) }} className='rounded-pill px-3 py-1 main-bg-clr' style={{ fontSize: '0.9em' }}>Take</button>
+                                                <button onClick={(e) => {
+                                                    history.push(`/viewquiz?quizid=${item.quizId}`)
+                                                }} className='rounded-pill px-3 py-1 main-bg-clr' style={{ fontSize: '0.9em' }}>Take</button>
                                             </div>
 
                                         </div>

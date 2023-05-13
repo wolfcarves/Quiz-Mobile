@@ -17,6 +17,8 @@ const Classes: React.FC = () => {
     const { userLogged, setUserLogged } = React.useContext(UserContext);
     const [studentClass, setStudentClass] = useState([]);
 
+    let userId = localStorage.getItem('userId');
+
     useEffect(() => {
         setUserLogged(true);
     }, [])
@@ -26,8 +28,6 @@ const Classes: React.FC = () => {
     useEffect(() => {
 
         const formData = new FormData();
-
-        let userId = localStorage.getItem('userId');
 
         formData.append('studentId', String(userId));
 

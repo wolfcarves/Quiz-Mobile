@@ -13,3 +13,9 @@ ion-checkbox::part(container) {
     border-radius: 3px;
     border: 2px solid #fff;
 }
+
+.outline-btn {
+    --color: #fff !important;
+    --border-color: #fff !important;
+    --background: transparent;
+}
