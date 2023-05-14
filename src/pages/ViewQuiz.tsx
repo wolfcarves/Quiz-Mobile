@@ -51,7 +51,7 @@ const ViewQuiz: React.FC = () => {
         }
     });
 
-    useEffect(() => {
+    function verifyQuiz() {
         const newFormData = new FormData();
 
         let userId = localStorage.getItem('userId');
@@ -65,15 +65,24 @@ const ViewQuiz: React.FC = () => {
         })
             .then(res => res.text())
             .then(data => {
+
                 if (data == 'Start Answering') {
                     setBtnText('Start Answering');
                     setDisable(false);
+                } else if (data == 'End') {
+                    setBtnText('You miss it');
+                    setDisable(true);
                 } else {
-                    setBtnText(data);
+                    setBtnText(data ? data : 'empty');
                     setDisable(true);
                 }
             })
             .catch(err => console.log(err))
+    }
+    useEffect(() => {
+        setInterval(() => {
+            verifyQuiz();
+        },100)
     }, [activate])
 
     return (
@@ -112,11 +121,9 @@ const ViewQuiz: React.FC = () => {
                             <div className='mt-auto mb-3'>
 
                                 <button id="submitBtn"
-                                    disabled={disable}
-                                    onClick={(e) => {
-                                        history.push(`/TakeQuiz?quizid=${item.quizId}`);
-                                    }} className={`w-100 ${disable == true ? 'main-bg-clr-50 text-white' : 'main-bg-clr'}`} style={{ height: '3rem', borderRadius: '15px' }}>
-                                    {btnText}{btnText != "Start Answering" ? "/" + item.quizLength : ""}
+                                    onClick={() => history.push(`/TakeQuiz?quizid=${quizId}`)}
+                                    disabled={disable} className={`w-100 ${disable == true ? 'main-bg-clr-50 text-white' : 'main-bg-clr'}`} style={{ height: '3rem', borderRadius: '15px' }}>
+                                    {btnText}{(btnText == 'Start Answering') ? '' : (String(btnText) == 'Score is hidden' || 'End') ? '' : "/" + item.quizLength}
                                 </button>
 
                             </div>

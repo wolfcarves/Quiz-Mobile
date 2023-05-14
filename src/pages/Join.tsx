@@ -12,6 +12,7 @@ import { UserContext } from '../App';
 const Join: React.FC = () => {
     const { userLogged, setUserLogged } = React.useContext(UserContext);
     const [classUnqid, setClassUniqid] = useState('');
+    const [message, setMessage] = useState('');
 
     const api = myApi;
 
@@ -33,7 +34,7 @@ const Join: React.FC = () => {
         })
             .then(response => response.text())
             .then(data => {
-                console.log(data);
+                setMessage(data);
             })
             .catch(err => console.log(err))
     }
@@ -44,6 +45,10 @@ const Join: React.FC = () => {
                 <div className='position-absolute top-0 bottom-0 w-100 p-2 overflow-auto' style={{ backgroundColor: '#1E304D' }}>
                     <div>
                         <h1 className='my-3'>Join Class</h1>
+                    </div>
+
+                    <div className='text-danger'>
+                        {message}
                     </div>
 
                     <input type="email" className='input form-control py-2 mt-2 mb-3 bg-transparent text-white'
